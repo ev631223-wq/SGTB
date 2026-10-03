@@ -129,7 +129,7 @@ namespace SGTB.Controllers
 
                 if (conductorId.HasValue && conductorId.Value > 0)
                 {
-                    query = query.Where(v => v.ConductorId == conductorId.Value);
+                    query = query.Where(v => v.ConductorId == conductorId.Value);     
                 }
 
                 if (fecha.HasValue)
