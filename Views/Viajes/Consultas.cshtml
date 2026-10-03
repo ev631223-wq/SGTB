@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "Consultas de Viajes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Consultas y Filtros de Viajes</h2>
+    <hr />
+
+    
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white" style="background-color: darkblue !important;">
+            Filtros de Búsqueda
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Consultas", "Viajes", FormMethod.Get))
+            {
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label>Ruta:</label>
+                        <select name="rutaId" class="form-control">
+                            <option value="">-- Todas las rutas --</option>
+                            @if (ViewBag.ListaRutas != null)
+                            {
+                                foreach (var ruta in ViewBag.ListaRutas)
+                                {
+                                    <option value="@ruta.Id">@ruta.Origen - @ruta.Destino</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Autobús:</label>
+                        <select name="busId" class="form-control">
+                            <option value="">-- Todos los buses --</option>
+                            @if (ViewBag.ListaBuses != null)
+                            {
+                                foreach (var bus in ViewBag.ListaBuses)
+                                {
+                                    <option value="@bus.Id">@bus.Placa - @bus.Modelo</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Conductor:</label>
+                        <select name="conductorId" class="form-control">
+                            <option value="">-- Todos los conductores --</option>
+                            @if (ViewBag.ListaConductores != null)
+                            {
+                                foreach (var cond in ViewBag.ListaConductores)
+                                {
+                                    <option value="@cond.Id">@cond.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Fecha:</label>
+                        <input type="date" name="fecha" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-5">Buscar / Filtrar</button>
+                    <a href="@Url.Action("Consultas", "Viajes")" class="btn btn-outline-secondary">Limpiar Filtros</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ruta</th>
+                        <th>Bus</th>
+                        <th>Conductor</th>
+                        <th>Fecha</th>
+                        <th>Hora Salida</th>
+                        <th>Precio</th>
+                        <th>Asientos Disponibles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.ListaViajes != null && ViewBag.ListaViajes.Count > 0)
+                    {
+                        foreach (var item in ViewBag.ListaViajes)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        string rutaTxt = "N/A";
+                                        try { rutaTxt = item.Rutas.Origen + " - " + item.Rutas.Destino; } catch { }
+                                    }
+                                    @rutaTxt
+                                </td>
+                                <td>
+                                    @{
+                                        string busTxt = "N/A";
+                                        try { busTxt = item.Buses.Placa; } catch { }
+                                    }
+                                    @busTxt
+                                </td>
+                                <td>
+                                    @{
+                                        string condTxt = "N/A";
+                                        try { condTxt = item.Conductores.Nombre; } catch { }
+                                    }
+                                    @condTxt
+                                </td>
+                                <td>@(item.Fecha != null ? Convert.ToDateTime(item.Fecha).ToString("yyyy-MM-dd") : "")</td>
+                                <td>@item.HoraSalida</td>
+                                <td>$@item.Precio</td>
+                                <td>@item.AsientosDisponibles</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">No se encontraron viajes con los filtros seleccionados.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

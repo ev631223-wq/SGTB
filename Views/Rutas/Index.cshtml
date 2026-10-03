@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Gestión de Rutas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var rutaEd = Model as SGTB.Rutas;
+}
+
+<div class="container mt-4">
+    <h2>Gestión de Rutas</h2>
+    <hr />
+
+   
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white" style="background-color: darkblue !important;">
+            @(rutaEd != null && rutaEd.Id > 0 ? "Editar Ruta" : "Registrar Nueva Ruta")
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Guardar", "Rutas", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@(rutaEd != null ? rutaEd.Id : 0)" />
+
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label>Origen:</label>
+                        <input type="text" name="Origen" class="form-control" value="@(rutaEd != null ? rutaEd.Origen : "")" required />
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Destino:</label>
+                        <input type="text" name="Destino" class="form-control" value="@(rutaEd != null ? rutaEd.Destino : "")" required />
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Distancia:</label>
+                        <input type="text" name="Distancia" class="form-control" value="@(rutaEd != null ? rutaEd.Distancia : "")" placeholder="Ej: 500 km" required />
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Duración:</label>
+                        <input type="text" name="Duracion" class="form-control" value="@(rutaEd != null ? rutaEd.Duracion : "")" placeholder="Ej: 6 hrs" required />
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Estado:</label>
+                        <input type="text" name="Estado" class="form-control" value="@(rutaEd != null ? rutaEd.Estado : "")" placeholder="Ej: Activo" required />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success me-5">Guardar Ruta</button>
+                    @if (rutaEd != null && rutaEd.Id > 0)
+                    {
+                        <a href="@Url.Action("Index", "Rutas")" class="btn btn-secondary">Cancelar</a>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Distancia</th>
+                        <th>Duración</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.ListaRutas != null && ViewBag.ListaRutas.Count > 0)
+                    {
+                        foreach (var item in ViewBag.ListaRutas)
+                        {
+                            <tr>
+                                <td>@item.Origen</td>
+                                <td>@item.Destino</td>
+                                <td>@item.Distancia</td>
+                                <td>@item.Duracion</td>
+                                <td>@item.Estado</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Index", "Rutas", new { id = item.Id })" class="btn btn-warning btn-sm me-5" title="Editar"  style="background-color: blue !important;">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <a href="@Url.Action("Eliminar", "Rutas", new { id = item.Id })" class="btn btn-danger btn-sm" title="Editar" onclick="return confirm('¿Estás seguro de eliminar esta ruta?');">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">No hay rutas registradas.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

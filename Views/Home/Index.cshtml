@@ -1,0 +1,91 @@
+﻿@model SGTB.Models.Buses
+
+@{
+    ViewBag.Title = "Gestión de Buses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Gestión de Buses</h2>
+    <hr />
+
+    <!-- Formulario de Registro / Edición -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            @(Model != null && Model.Id > 0 ? "Editar Bus" : "Registrar Nuevo Bus")
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Guardar", "Buses", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id) <!-- CAMBIADO A Id -->
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Placa:</label>
+                        @Html.TextBoxFor(model => model.Placa, new { @class = "form-control", required = "required", placeholder = "Ej: ABC-123" })
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Modelo:</label>
+                        @Html.TextBoxFor(model => model.Modelo, new { @class = "form-control", required = "required", placeholder = "Ej: Volvo 9700" })
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Capacidad:</label>
+                        @Html.TextBoxFor(model => model.Capacidad, new { @class = "form-control", type = "number", required = "required", placeholder = "Ej: 50" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Estado:</label>
+                        @Html.DropDownListFor(model => model.Estado, new SelectList(new[] { "Activo", "Taller", "Mantenimiento" }), "Seleccione estado", new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success me-2">Guardar</button>
+                    <a href="@Url.Action("Index", "Buses")" class="btn btn-secondary">Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Tabla de Listado -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Placa</th>
+                        <th>Modelo</th>
+                        <th>Capacidad</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.ListaBuses != null)
+                    {
+                        foreach (var item in ViewBag.ListaBuses)
+                        {
+                            <tr>
+                                <td>@item.Placa</td>
+                                <td>@item.Modelo</td>
+                                <td>@item.Capacidad</td>
+                                <td>
+                                    <span class="badge @(item.Estado == "Activo" ? "bg-success" : "bg-warning text-dark")">
+                                        @item.Estado
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Index", "Buses", new { id = item.Id })" class="btn btn-sm btn-primary">Editar</a> <!-- CAMBIADO A Id -->
+                                    <a href="@Url.Action("Eliminar", "Buses", new { id = item.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este bus?');">Eliminar</a> <!-- CAMBIADO A Id -->
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

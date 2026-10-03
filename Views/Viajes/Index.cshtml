@@ -1,0 +1,176 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Gestión de Viajes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var v = Model;
+    int idVal = 0;
+    int rutaVal = 0;
+    int busVal = 0;
+    int conductorVal = 0;
+    string fechaVal = DateTime.Now.ToString("yyyy-MM-dd");
+    string horaSalidaVal = "";
+    decimal precioVal = 0;
+    int asientosVal = 0;
+
+    if (v != null)
+    {
+        try { idVal = v.Id; } catch { }
+        try { rutaVal = v.RutaId; } catch { }
+        try { busVal = v.BusId; } catch { }
+        try { conductorVal = v.ConductorId; } catch { }
+        try { fechaVal = Convert.ToDateTime(v.Fecha).ToString("yyyy-MM-dd"); } catch { }
+        try { horaSalidaVal = v.HoraSalida != null ? v.HoraSalida.ToString() : ""; } catch { }
+        try { precioVal = v.Precio; } catch { }
+        try { asientosVal = v.AsientosDisponibles; } catch { }
+    }
+}
+
+<div class="container mt-4">
+    <h2>Gestión de Viajes</h2>
+    <hr />
+
+    
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white" style="background-color: darkblue !important;">
+            @(idVal > 0 ? "Editar Viaje" : "Registrar Nuevo Viaje")
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Guardar", "Viajes", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@idVal" />
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Ruta:</label>
+                        <select name="RutaId" class="form-control" required>
+                            <option value="">Seleccione una ruta</option>
+                            @if (ViewBag.ListaRutas != null)
+                            {
+                                foreach (var ruta in ViewBag.ListaRutas)
+                                {
+                                    <option value="@ruta.Id" @(rutaVal == ruta.Id ? "selected" : "")>@ruta.Origen - @ruta.Destino</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Autobús (Placa/Modelo):</label>
+                        <select name="BusId" class="form-control" required>
+                            <option value="">Seleccione un bus</option>
+                            @if (ViewBag.ListaBuses != null)
+                            {
+                                foreach (var bus in ViewBag.ListaBuses)
+                                {
+                                    <option value="@bus.Id" @(busVal == bus.Id ? "selected" : "")>@bus.Placa - @bus.Modelo</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Conductor:</label>
+                        <select name="ConductorId" class="form-control" required>
+                            <option value="">Seleccione un conductor</option>
+                            @if (ViewBag.ListaConductores != null)
+                            {
+                                foreach (var cond in ViewBag.ListaConductores)
+                                {
+                                    <option value="@cond.Id" @(conductorVal == cond.Id ? "selected" : "")>@cond.Nombre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label>Fecha:</label>
+                        <input type="date" name="Fecha" class="form-control" required value="@fechaVal" />
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Hora de Salida:</label>
+                        <input type="time" name="HoraSalida" class="form-control" required value="@horaSalidaVal" />
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Precio ($):</label>
+                        <input type="number" step="0.01" name="Precio" class="form-control" required value="@precioVal" placeholder="0.00" />
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label>Asientos Disponibles:</label>
+                        <input type="number" name="AsientosDisponibles" class="form-control" required value="@asientosVal" placeholder="Ej: 40" />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success me-5">Guardar</button>
+                    <a href="@Url.Action("Index", "Viajes")" class="btn btn-secondary">Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ruta</th>
+                        <th>Bus</th>
+                        <th>Conductor</th>
+                        <th>Fecha</th>
+                        <th>Hora Salida</th>
+                        <th>Precio</th>
+                        <th>Asientos</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.ListaViajes != null)
+                    {
+                        foreach (var item in ViewBag.ListaViajes)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        string rutaTxt = "N/A";
+                                        try { rutaTxt = item.Rutas.Origen + " - " + item.Rutas.Destino; } catch { }
+                                    }
+                                    @rutaTxt
+                                </td>
+                                <td>
+                                    @{
+                                        string busTxt = "N/A";
+                                        try { busTxt = item.Buses.Placa; } catch { }
+                                    }
+                                    @busTxt
+                                </td>
+                                <td>
+                                    @{
+                                        string condTxt = "N/A";
+                                        try { condTxt = item.Conductores.Nombre; } catch { }
+                                    }
+                                    @condTxt
+                                </td>
+                                <td>@(item.Fecha != null ? Convert.ToDateTime(item.Fecha).ToString("yyyy-MM-dd") : "")</td>
+                                <td>@item.HoraSalida</td>
+                                <td>$@item.Precio</td>
+                                <td>@item.AsientosDisponibles</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Index", "Viajes", new { id = item.Id })" class="btn btn-sm btn-primary me-5" title="Editar">
+                                        <i class="bi bi-pencil-fill"></i>
+
+                                    </a>
+                                    <a href="@Url.Action("Eliminar", "Viajes", new { id = item.Id })" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este viaje?');">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

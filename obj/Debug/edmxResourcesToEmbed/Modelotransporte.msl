@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SistemaTransporteDBModelStoreContainer" CdmEntityContainer="SistemaTransporteDBEntities">
+    <EntitySetMapping Name="Boletos">
+      <EntityTypeMapping TypeName="SistemaTransporteDBModel.Boletos">
+        <MappingFragment StoreEntitySet="Boletos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ViajeId" ColumnName="ViajeId" />
+          <ScalarProperty Name="NombrePasajero" ColumnName="NombrePasajero" />
+          <ScalarProperty Name="CedulaPasajero" ColumnName="CedulaPasajero" />
+          <ScalarProperty Name="TelefonoPasajero" ColumnName="TelefonoPasajero" />
+          <ScalarProperty Name="EmailPasajero" ColumnName="EmailPasajero" />
+          <ScalarProperty Name="AsientoSeleccionado" ColumnName="AsientoSeleccionado" />
+          <ScalarProperty Name="MetodoPago" ColumnName="MetodoPago" />
+          <ScalarProperty Name="TotalPagar" ColumnName="TotalPagar" />
+          <ScalarProperty Name="FechaVenta" ColumnName="FechaVenta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Buses">
+      <EntityTypeMapping TypeName="SistemaTransporteDBModel.Buses">
+        <MappingFragment StoreEntitySet="Buses">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Placa" ColumnName="Placa" />
+          <ScalarProperty Name="Modelo" ColumnName="Modelo" />
+          <ScalarProperty Name="Capacidad" ColumnName="Capacidad" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Conductores">
+      <EntityTypeMapping TypeName="SistemaTransporteDBModel.Conductores">
+        <MappingFragment StoreEntitySet="Conductores">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Cedula" ColumnName="Cedula" />
+          <ScalarProperty Name="Licencia" ColumnName="Licencia" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rutas">
+      <EntityTypeMapping TypeName="SistemaTransporteDBModel.Rutas">
+        <MappingFragment StoreEntitySet="Rutas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Origen" ColumnName="Origen" />
+          <ScalarProperty Name="Destino" ColumnName="Destino" />
+          <ScalarProperty Name="Distancia" ColumnName="Distancia" />
+          <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usuarios">
+      <EntityTypeMapping TypeName="SistemaTransporteDBModel.Usuarios">
+        <MappingFragment StoreEntitySet="Usuarios">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+          <ScalarProperty Name="Rol" ColumnName="Rol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Viajes">
+      <EntityTypeMapping TypeName="SistemaTransporteDBModel.Viajes">
+        <MappingFragment StoreEntitySet="Viajes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RutaId" ColumnName="RutaId" />
+          <ScalarProperty Name="BusId" ColumnName="BusId" />
+          <ScalarProperty Name="ConductorId" ColumnName="ConductorId" />
+          <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+          <ScalarProperty Name="HoraSalida" ColumnName="HoraSalida" />
+          <ScalarProperty Name="HoraLlegada" ColumnName="HoraLlegada" />
+          <ScalarProperty Name="Precio" ColumnName="Precio" />
+          <ScalarProperty Name="AsientosDisponibles" ColumnName="AsientosDisponibles" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

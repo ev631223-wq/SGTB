@@ -1,0 +1,52 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login - SGTB</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="text-center mb-4">SGTB - Acceso</h3>
+
+                        @using (Html.BeginForm("Login", "Acceso", FormMethod.Post))
+                        {
+                            <div class="mb-5">
+                                <label>Usuario</label>
+                                <input type="text" name="correo" class="form-control" required />
+                            </div>
+                            <div class="mb-5">
+                                <label>Contraseña</label>
+                                <input type="password" name="clave" class="form-control" required />
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn text-white w-100" style="background-color: darkblue !important; border-color: deepskyblue !important;">Ingresar</button>
+                            </div>
+
+                            if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger mt-3 text-center">
+                                    @ViewBag.Error
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>document.querySelector("form").addEventListener("submit", function () {
+        localStorage.setItem("mostrarBienvenida", "true");
+    });</script>
+
+</body>
+</html>

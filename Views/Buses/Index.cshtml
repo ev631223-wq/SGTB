@@ -1,0 +1,116 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Gestión de Buses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    
+    var bus = Model;
+    int idVal = 0;
+    string placaVal = "";
+    string modeloVal = "";
+    int capacidadVal = 0;
+    string estadoVal = "";
+
+    if (bus != null)
+    {
+        try { idVal = bus.Id; } catch { }
+        try { placaVal = bus.Placa ?? ""; } catch { }
+        try { modeloVal = bus.Modelo ?? ""; } catch { }
+        try { capacidadVal = bus.Capacidad ?? 0; } catch { }
+        try { estadoVal = bus.Estado ?? ""; } catch { }
+    }
+}
+
+<div class="container mt-4">
+    <h2>Gestión de Buses</h2>
+    <hr />
+
+     
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white" style="background-color: darkblue !important; ">
+            @(idVal > 0 ? "Editar Bus" : "Registrar Nuevo Bus")
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Guardar", "Buses", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@idVal" />
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Placa:</label>
+                        <input type="text" name="Placa" class="form-control" required value="@placaVal" placeholder="Ej: ABC-123" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Modelo:</label>
+                        <input type="text" name="Modelo" class="form-control" required value="@modeloVal" placeholder="Ej: Volvo 9700" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Capacidad:</label>
+                        <input type="number" name="Capacidad" class="form-control" required value="@(idVal > 0 ? capacidadVal.ToString() : "")" placeholder="Ej: 50" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Estado:</label>
+                        <select name="Estado" class="form-control" required>
+                            <option value="">Seleccione estado</option>
+                            <option value="Activo" @(estadoVal == "Activo" ? "selected" : "")>Activo</option>
+                            <option value="Taller" @(estadoVal == "Taller" ? "selected" : "")>Taller</option>
+                            <option value="Mantenimiento" @(estadoVal == "Mantenimiento" ? "selected" : "")>Mantenimiento</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success me-5">Guardar</button>
+                    <a href="@Url.Action("Index", "Buses")" class="btn btn-secondary">Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Placa</th>
+                        <th>Modelo</th>
+                        <th>Capacidad</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.ListaBuses != null)
+                    {
+                        foreach (var item in ViewBag.ListaBuses)
+                        {
+                            <tr>
+                                <td>@item.Placa</td>
+                                <td>@item.Modelo</td>
+                                <td>@item.Capacidad</td>
+                                <td>
+                                    <span class="badge @(item.Estado == "Activo" ? "bg-success" : "bg-warning text-dark")">
+                                        @item.Estado
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Index", "Buses", new { id = item.Id })" class="btn btn-sm btn-primary me-5" title="Editar">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <a href="@Url.Action("Eliminar", "Buses", new { id = item.Id })" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este bus?');">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

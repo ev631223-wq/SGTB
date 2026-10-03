@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SistemaTransporteDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Boletos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ViajeId" Type="int" />
+    <Property Name="NombrePasajero" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="CedulaPasajero" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="TelefonoPasajero" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="EmailPasajero" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="AsientoSeleccionado" Type="int" Nullable="false" />
+    <Property Name="MetodoPago" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="TotalPagar" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="FechaVenta" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Buses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Placa" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Modelo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Capacidad" Type="int" Nullable="false" />
+    <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Conductores">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Cedula" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Licencia" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Telefono" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Rutas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Origen" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Destino" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Distancia" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Duracion" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="NombreCompleto" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Rol" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Viajes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RutaId" Type="int" />
+    <Property Name="BusId" Type="int" />
+    <Property Name="ConductorId" Type="int" />
+    <Property Name="Fecha" Type="date" Nullable="false" />
+    <Property Name="HoraSalida" Type="time" Precision="7" Nullable="false" />
+    <Property Name="HoraLlegada" Type="time" Precision="7" Nullable="false" />
+    <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AsientosDisponibles" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Boletos__ViajeId__47DBAE45">
+    <End Role="Viajes" Type="Self.Viajes" Multiplicity="0..1" />
+    <End Role="Boletos" Type="Self.Boletos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Viajes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Boletos">
+        <PropertyRef Name="ViajeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Viajes__BusId__440B1D61">
+    <End Role="Buses" Type="Self.Buses" Multiplicity="0..1" />
+    <End Role="Viajes" Type="Self.Viajes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Buses">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Viajes">
+        <PropertyRef Name="BusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Viajes__Conducto__44FF419A">
+    <End Role="Conductores" Type="Self.Conductores" Multiplicity="0..1" />
+    <End Role="Viajes" Type="Self.Viajes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Conductores">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Viajes">
+        <PropertyRef Name="ConductorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Viajes__RutaId__4316F928">
+    <End Role="Rutas" Type="Self.Rutas" Multiplicity="0..1" />
+    <End Role="Viajes" Type="Self.Viajes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rutas">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Viajes">
+        <PropertyRef Name="RutaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SistemaTransporteDBModelStoreContainer">
+    <EntitySet Name="Boletos" EntityType="Self.Boletos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Buses" EntityType="Self.Buses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Conductores" EntityType="Self.Conductores" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rutas" EntityType="Self.Rutas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Viajes" EntityType="Self.Viajes" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Boletos__ViajeId__47DBAE45" Association="Self.FK__Boletos__ViajeId__47DBAE45">
+      <End Role="Viajes" EntitySet="Viajes" />
+      <End Role="Boletos" EntitySet="Boletos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Viajes__BusId__440B1D61" Association="Self.FK__Viajes__BusId__440B1D61">
+      <End Role="Buses" EntitySet="Buses" />
+      <End Role="Viajes" EntitySet="Viajes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Viajes__Conducto__44FF419A" Association="Self.FK__Viajes__Conducto__44FF419A">
+      <End Role="Conductores" EntitySet="Conductores" />
+      <End Role="Viajes" EntitySet="Viajes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Viajes__RutaId__4316F928" Association="Self.FK__Viajes__RutaId__4316F928">
+      <End Role="Rutas" EntitySet="Rutas" />
+      <End Role="Viajes" EntitySet="Viajes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
