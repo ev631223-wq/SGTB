@@ -112,7 +112,7 @@ GO
 
 
 
--- Usuario Administrador Principal (Clave secreta del dueño)
+-- Usuario Administrador Principal
 INSERT INTO [dbo].[Usuarios] ([Username], [Password], [NombreCompleto], [Rol]) 
 VALUES ('admin', '12345', 'Administrador Principal', 'Admin');
 GO
@@ -127,13 +127,13 @@ GO
 -- FUNCIONES PEDIDAS
 
 
-PRINT '--- 1. EVIDENCIA DE AUTENTICACIÓN (ADMINISTRADOR) ---';
+
 SELECT [Id], [Username], [NombreCompleto], [Rol] 
 FROM [dbo].[Usuarios] 
 WHERE [Username] = 'admin';
 GO
 
-PRINT '--- 2. EVIDENCIA DE REGISTRO DE RUTA ---';
+
 SELECT TOP 1 [Id], [Origen], [Destino], [Distancia], [Duracion], [Estado] 
 FROM [dbo].[Rutas] 
 ORDER BY [Id] DESC;
