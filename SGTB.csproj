@@ -181,6 +181,7 @@
     </Compile>
     <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BoletosController.cs" />
     <Compile Include="Controllers\BusesController.cs" />
     <Compile Include="Controllers\ConductoresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -314,9 +315,11 @@
     <Content Include="Views\Viajes\Index.cshtml" />
     <Content Include="Views\Viajes\Consultas.cshtml" />
     <Content Include="Views\Rutas\Index.cshtml" />
+    <Content Include="Views\Boletos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
