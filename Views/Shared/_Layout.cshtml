@@ -27,7 +27,7 @@
             z-index: 100;
             transition: all 0.3s;
         }
-            
+             
             #sidebar.active {
                 margin-left: -260px;
             }
@@ -115,6 +115,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-white rounded py-2 px-3" href="@Url.Action("Index", "Rutas")">
                                 <i class="bi bi-map me-2"></i> Rutas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Boletos")" class="text-white text-decoration-none d-block py-2 px-3 mb-2">
+                                <i class="bi bi-ticket-perforated-fill me-2"></i> Boletos
                             </a>
                         </li>
                     </ul>

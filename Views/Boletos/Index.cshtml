@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Gestión de Boletos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var boletoEd = Model as SGTB.Boletos;
+    var viajesList = ViewBag.ListaViajes as System.Collections.Generic.List<SGTB.Viajes>;
+}
+
+<div class="container mt-4">
+    <h2><i class="bi bi-ticket-perforated-fill me-2"></i> Gestión de Boletos</h2>
+    <hr />
+
+    
+    <div class="card shadow-sm mb-4">
+        <div class="card-header text-white" style="background-color: darkblue !important;">
+            @(boletoEd != null && boletoEd.Id > 0 ? "Editar Boleto" : "Registrar Nuevo Boleto")
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Guardar", "Boletos", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@(boletoEd != null ? boletoEd.Id : 0)" />
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>ID de Viaje:</label>
+                        <input type="number" name="ViajeId" class="form-control" value="@(boletoEd != null ? boletoEd.ViajeId : 1)" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Nombre del Pasajero:</label>
+                        <input type="text" name="NombrePasajero" class="form-control" value="@(boletoEd != null ? boletoEd.NombrePasajero : "")" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Cédula del Pasajero:</label>
+                        <input type="text" name="CedulaPasajero" class="form-control" value="@(boletoEd != null ? boletoEd.CedulaPasajero : "")" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Teléfono:</label>
+                        <input type="text" name="TelefonoPasajero" class="form-control" value="@(boletoEd != null ? boletoEd.TelefonoPasajero : "")" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Correo Electrónico:</label>
+                        <input type="email" name="EmailPasajero" class="form-control" value="@(boletoEd != null ? boletoEd.EmailPasajero : "")" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Asiento Seleccionado:</label>
+                        <input type="number" name="AsientoSeleccionado" class="form-control" value="@(boletoEd != null ? boletoEd.AsientoSeleccionado : 1)" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Método de Pago:</label>
+                        <input type="text" name="MetodoPago" class="form-control" value="@(boletoEd != null ? boletoEd.MetodoPago : "Efectivo")" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Total a Pagar ($):</label>
+                        <input type="number" step="0.01" name="TotalPagar" class="form-control" value="@(boletoEd != null ? boletoEd.TotalPagar : 0.00m)" required />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success me-2">Guardar Boleto</button>
+                    @if (boletoEd != null && boletoEd.Id > 0)
+                    {
+                        <a href="@Url.Action("Index", "Boletos")" class="btn btn-secondary">Cancelar</a>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Pasajero</th>
+                        <th>Cédula</th>
+                        <th>Teléfono</th>
+                        <th>Asiento</th>
+                        <th>Pago</th>
+                        <th>Total</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.ListaBoletos != null && ViewBag.ListaBoletos.Count > 0)
+                    {
+                        foreach (var item in ViewBag.ListaBoletos)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.NombrePasajero</td>
+                                <td>@item.CedulaPasajero</td>
+                                <td>@item.TelefonoPasajero</td>
+                                <td><span class="badge bg-primary">#@item.AsientoSeleccionado</span></td>
+                                <td>@item.MetodoPago</td>
+                                <td>$@item.TotalPagar</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Index", "Boletos", new { id = item.Id })" class="btn btn-warning btn-sm me-1" title="Editar" style="background-color: blue !important; color: white;">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <a href="@Url.Action("Eliminar", "Boletos", new { id = item.Id })" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este boleto?');">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">No hay boletos registrados.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -72,7 +72,7 @@ namespace SGTB.Controllers
             return RedirectToAction("Index");
         }
 
-        
+
         public ActionResult Eliminar(int id)
         {
             try
@@ -84,7 +84,11 @@ namespace SGTB.Controllers
                     db.SaveChanges();
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                
+                System.Diagnostics.Debug.WriteLine("Error al eliminar: " + ex.Message);
+            }
 
             return RedirectToAction("Index");
         }
