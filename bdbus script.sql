@@ -1,6 +1,5 @@
 ﻿
--- SISTEMA DE USO EXCLUSIVO ADMINISTRATIVO
--- Base de Datos: SistemaTransporteDB
+
 
 USE [master];
 GO
@@ -98,11 +97,11 @@ GO
 ALTER TABLE [dbo].[Boletos] ADD DEFAULT (getdate()) FOR [FechaVenta];
 GO
 
--- Configurado como 'Admin' ya que es de acceso reservado al administrador
+
 ALTER TABLE [dbo].[Usuarios] ADD DEFAULT ('Admin') FOR [Rol];
 GO
 
--- LLAVES FORÁNEAS DE VIAJES
+
 ALTER TABLE [dbo].[Viajes] WITH CHECK ADD FOREIGN KEY([BusId]) REFERENCES [dbo].[Buses] ([Id]);
 GO
 ALTER TABLE [dbo].[Viajes] WITH CHECK ADD FOREIGN KEY([ConductorId]) REFERENCES [dbo].[Conductores] ([Id]);
@@ -112,19 +111,18 @@ GO
 
 
 
--- Usuario Administrador Principal
+
 INSERT INTO [dbo].[Usuarios] ([Username], [Password], [NombreCompleto], [Rol]) 
 VALUES ('admin', '12345', 'Administrador Principal', 'Admin');
 GO
 
--- Ruta de prueba registrada desde la interfaz
+
 INSERT INTO [dbo].[Rutas] ([Origen], [Destino], [Distancia], [Duracion], [Estado]) 
 VALUES ('tipitapa huembes', 'mercado huembes', '600km', '7', 'Activo');
 GO
 
 
 
--- FUNCIONES PEDIDAS
 
 
 
